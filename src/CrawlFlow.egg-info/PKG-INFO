@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: CrawlFlow
+Version: 0.0.1
+Summary: An assistant for web crawling
+Author-email: Amirmahdi Mohammadi <mohamadi.mahdi.6@gmail.com>
+Project-URL: Homepage, https://github.com/am-mohammadi/CrawlFlow
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# crawl_handler

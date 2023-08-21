@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/CrawlTypes.py
+src/crawl_handler.py
+src/CrawlFlow.egg-info/PKG-INFO
+src/CrawlFlow.egg-info/SOURCES.txt
+src/CrawlFlow.egg-info/dependency_links.txt
+src/CrawlFlow.egg-info/top_level.txt
