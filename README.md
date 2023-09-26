@@ -6,12 +6,8 @@ This module is a tool for web scrap handling.
 How to use:
 Importing packages
 ```python
-import sys
-#Adding crawl_handler as a python path
-sys.path.append("../crawl_handler/")
-
-from crawl_handler import Handler
-import CrawlTypes
+from CrawlFlow.handler import Handler
+from CrawlFlow import types as CrawlTypes
 import json
 import pandas as pd
 ```
