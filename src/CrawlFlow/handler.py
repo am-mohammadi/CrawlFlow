@@ -206,27 +206,23 @@ class Handler:
         con = sqlite3.connect(f"{self.path}{self.name}_DB.db")
         cur = con.cursor()
         for table_name in df:
-            try:
-                table=pd.json_normalize(df[table_name])
-                if create_table:
-                    if table_name in self.vars.DB_tables:
-                        continue
-                    columns=[x.replace('.', '_') for x in table.columns]
-                    columns='indexx, '+', '.join(columns)
-                    cur.execute(f"CREATE TABLE {table_name}({columns})")
-                    print(f'{table_name} table created with {len(table.columns)} columns.')
-                    self.vars.DB_tables.append(table_name)
-                    self.vars.columns[table_name]=table.columns.to_list()
-                table=df_col_review(table, self.vars.columns[table_name])
-                data = tuple(table.itertuples())
-                wildcards = ','.join(['?'] * (len(table.columns)+1))
-                insert_sql = f'INSERT INTO {table_name} VALUES (%s)' % wildcards
-                # if table_name=='connetions':
-                #     print(table)
-                cur.executemany(insert_sql, data)
-            except Exception as e:
-                print('sendDB failed', e)
-                
+            table=pd.json_normalize(df[table_name])
+            if create_table:
+                if table_name in self.vars.DB_tables:
+                    continue
+                columns=[x.replace('.', '_') for x in table.columns]
+                columns='indexx, '+', '.join(columns)
+                cur.execute(f"CREATE TABLE {table_name}({columns})")
+                print(f'{table_name} table created with {len(table.columns)} columns.')
+                self.vars.DB_tables.append(table_name)
+                self.vars.columns[table_name]=table.columns.to_list()
+            table=df_col_review(table, self.vars.columns[table_name])
+            data = tuple(table.itertuples())
+            wildcards = ','.join(['?'] * (len(table.columns)+1))
+            insert_sql = f'INSERT INTO {table_name} VALUES (%s)' % wildcards
+            # if table_name=='connetions':
+            #     print(table)
+            cur.executemany(insert_sql, data)
         con.commit()
         cur.close()
 
