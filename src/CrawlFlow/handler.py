@@ -175,7 +175,7 @@ class Handler:
         '''
         try:
             self.sendDB(self.tables, 
-                        create_table=(self.vars.counter==0 or not self.vars.tables_created))
+                      )
             self.flush_tables()
             self.write(self.vars)
             self.vars.tables_created=True
@@ -187,7 +187,7 @@ class Handler:
         for table_name in self.tables:
             self.tables[table_name]=[]
     
-    def sendDB(self, df, create_table=False):
+    def sendDB(self, df):
         '''
         Sending to DB
 
@@ -208,9 +208,7 @@ class Handler:
         for table_name in df:
             try:
                 table=pd.json_normalize(df[table_name])
-                if create_table:
-                    if table_name in self.vars.DB_tables:
-                        continue
+                if table_name not in self.vars.DB_tables: 
                     columns=[x.replace('.', '_') for x in table.columns]
                     columns='indexx, '+', '.join(columns)
                     cur.execute(f"CREATE TABLE {table_name}({columns})")
@@ -225,7 +223,7 @@ class Handler:
                 #     print(table)
                 cur.executemany(insert_sql, data)
             except Exception as e:
-                print('sendDB failed', e)
+                print('sendDB failed', table_name, e)
         con.commit()
         cur.close()
 
