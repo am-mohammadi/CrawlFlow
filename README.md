@@ -133,4 +133,12 @@ Hanlder.vars is an object that will be save in every ckeckpoint. so you set your
 ```
 If you set Hanlder.vars.done=True scraping process will be finished after that.
 ```
+
+Defining response status codes for interrupting the process
+```
+Handler.request.bypass_status_codes = [204]
+#If status codes be 204 request_data in data2rows will be like this:
+{'status_code': 204}
+```
+
 -----------------------------

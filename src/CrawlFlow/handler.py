@@ -364,6 +364,8 @@ class Request:
         
         self.method='get'
         
+        self.bypass_status_codes=[]
+        
     def read_headers(self, path):
         with open(path) as f:
             self.headers = json.load(f)
@@ -394,6 +396,8 @@ class Request:
                                             timeout=self.timeout, **self.kwargs)
                     
                 status = response.status_code
+                if status in self.bypass_status_codes:
+                    return {'status_code': status}
                 if status == 404:
                     print('Faliled, 404')
                     self.failed = True
