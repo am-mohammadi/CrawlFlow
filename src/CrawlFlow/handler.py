@@ -53,6 +53,8 @@ class Handler:
         #Directory of the project
         self.directory=''
         
+        self.object_columns_method = 'to_str'  #to_str/drop/none
+        
         
         
         
@@ -208,6 +210,16 @@ class Handler:
         for table_name in df:
             try:
                 table=pd.json_normalize(df[table_name])
+                for col in table.columns:
+                    if table[col].dtype == 'O':
+                        if self.object_columns_method == 'to_str':
+                            table[col] = table[col].astype('string')
+                            print(table_name, col, 'converted to string.')
+                        elif self.object_columns_method == 'drop':
+                            table.drop(columns=[col], inplace = True)
+                            print(table_name, col, 'dropped.')
+                            
+                    
                 if table_name not in self.vars.DB_tables: 
                     columns=[x.replace('.', '_') for x in table.columns]
                     columns='indexx, '+', '.join(columns)
