@@ -53,7 +53,7 @@ class Handler:
         #Directory of the project
         self.directory=''
         
-        self.object_columns_method = 'to_str'  #to_str/drop/none
+        self.object_columns_method = 'none'  #to_str/drop/none
         
         
         
