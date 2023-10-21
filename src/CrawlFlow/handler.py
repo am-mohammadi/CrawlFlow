@@ -161,7 +161,8 @@ class Handler:
                 self.tables[table_name]+=tables_rows[table_name]
             else:
                 self.tables[table_name]=tables_rows[table_name]
-        if self.vars.counter%self.chk_point_interval==0 or self.vars.done:
+        if ((self.vars.counter%self.chk_point_interval==0 or self.vars.done) 
+        and  self.vars.counter>0):
             self.chk_point()
         
         
