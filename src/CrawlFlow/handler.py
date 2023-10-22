@@ -211,10 +211,11 @@ class Handler:
         for table_name in df:
             try:
                 table=pd.json_normalize(df[table_name])
+                table=table.where(pd.notnull(table), None)
                 for col in table.columns:
                     if table[col].dtype == 'O':
                         if self.object_columns_method == 'to_str':
-                            table[col] = table[col].astype('string')
+                            table[col] = table[col].astype('str')
                             print(table_name, col, 'converted to string.')
                         elif self.object_columns_method == 'drop':
                             table.drop(columns=[col], inplace = True)
