@@ -394,6 +394,11 @@ class Request:
         tries = 0
         self.failed = False
         while status != 200:
+            if tries>=self.max_retries:
+                print('Max retry, skipped')
+                self.failed = True
+                return
+            tries+= 1
             try:
                 if status!=0 :
                     print('sleeping...', status, url)
@@ -416,13 +421,8 @@ class Request:
                     print('Faliled, 404')
                     self.failed = True
                     return
-                if tries>=self.max_retries:
-                    print('Max retry, skipped')
-                    self.failed = True
-                    return
-                tries+= 1
+                
             except Exception as e:
-                tries+= 1
                 print('req get', e)
                 time.sleep(5)
         if self.sleep_time is not None:
