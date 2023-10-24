@@ -282,7 +282,7 @@ class Handler:
         path=self.path+'/data/'
         if not os.path.exists(path):
             os.makedirs(path)
-        for table_name in self.tables:
+        for table_name in self.vars.DB_tables:
             table=self.readDB(table_name)
             table.to_csv(f'{path}{table_name}.csv', index=False, encoding='utf-8-sig')
 
