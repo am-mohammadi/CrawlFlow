@@ -8,8 +8,6 @@ Importing packages
 ```python
 from CrawlFlow.handler import Handler
 from CrawlFlow import types as CrawlTypes
-import json
-import pandas as pd
 ```
 
 Crawl types
@@ -29,12 +27,12 @@ class TestCrawler(Handler):
         super().__init__(name)
         self.type=CrawlTypes.API()
 
-  def data2rows(self, request_data):
-          '''you scrap code here'''
+    def data2rows(self, request_data):
+        '''you scrap code here'''
 
-          tables_rows={'videoList': videoList}
-          
-          return tables_rows
+        tables_rows={'videoList': videoList}
+        
+        return tables_rows
 ```
 You need to define a method in the class called "data2rows". 
 in this function you will get a variable called "request_data" that is your desired data (in API, json data/ in BS4, BS4 object)
