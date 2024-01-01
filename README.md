@@ -140,3 +140,22 @@ Handler.request.bypass_status_codes = [204]
 ```
 
 -----------------------------
+Sending to databases
+
+first you should set Handler.DB_type to sqllite/mongo/local befor Handler.init()
+**sqllite**: It is default value and will send data to the local sqllite database
+
+**mongo**: It will send data to data MongoDB. also you need to set Handler.DB_info
+```python
+Handler.DB_info = {'database': 'myDataBase',
+                    'connetion_string': 'MongoDB connetion_string'
+                    }
+```
+
+**local**: It will save data in pickle object. note that this option is for small size data.
+
+-----------------------------
+
+
+
+

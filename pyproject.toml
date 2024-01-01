@@ -1,7 +1,7 @@
 
 [project]
 name = "CrawlFlow"
-version = "0.1.2"
+version = "0.2.0"
 authors = [
   { name="Amirmahdi Mohammadi", email="mohamadi.mahdi.6@gmail.com" },
 ]

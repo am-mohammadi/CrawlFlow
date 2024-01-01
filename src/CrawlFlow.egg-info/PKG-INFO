@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: CrawlFlow
-Version: 0.1.2
+Version: 0.2.0
 Summary: An assistant for web crawling
 Author-email: Amirmahdi Mohammadi <mohamadi.mahdi.6@gmail.com>
 Project-URL: Homepage, https://github.com/am-mohammadi/CrawlFlow
@@ -21,8 +21,6 @@ Importing packages
 ```python
 from CrawlFlow.handler import Handler
 from CrawlFlow import types as CrawlTypes
-import json
-import pandas as pd
 ```
 
 Crawl types
@@ -42,12 +40,12 @@ class TestCrawler(Handler):
         super().__init__(name)
         self.type=CrawlTypes.API()
 
-  def data2rows(self, request_data):
-          '''you scrap code here'''
+    def data2rows(self, request_data):
+        '''you scrap code here'''
 
-          tables_rows={'videoList': videoList}
-          
-          return tables_rows
+        tables_rows={'videoList': videoList}
+        
+        return tables_rows
 ```
 You need to define a method in the class called "data2rows". 
 in this function you will get a variable called "request_data" that is your desired data (in API, json data/ in BS4, BS4 object)
@@ -155,3 +153,22 @@ Handler.request.bypass_status_codes = [204]
 ```
 
 -----------------------------
+Sending to databases
+
+first you should set Handler.DB_type to sqllite/mongo/local befor Handler.init()
+**sqllite**: It is default value and will send data to the local sqllite database
+
+**mongo**: It will send data to data MongoDB. also you need to set Handler.DB_info
+```python
+Handler.DB_info = {'database': 'myDataBase',
+                    'connetion_string': 'MongoDB connetion_string'
+                    }
+```
+
+**local**: It will save data in pickle object. note that this option is for small size data.
+
+-----------------------------
+
+
+
+

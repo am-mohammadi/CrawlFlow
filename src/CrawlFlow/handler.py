@@ -17,6 +17,7 @@ from tqdm import tqdm
 # import re
 import json
 import sqlite3
+import pymongo
 import os
 
 
@@ -55,6 +56,12 @@ class Handler:
         
         self.object_columns_method = 'none'  #to_str/drop/none
         
+        #database type for saving data
+        self.DB_type = 'sqllite' #sqllite/mongo/local
+        self.DB_info = None
+        
+     
+        
         
         
         
@@ -74,6 +81,16 @@ class Handler:
         self.path=self.directory+self.name+'/'
         if not os.path.exists(self.path):
             os.makedirs(self.path)
+        
+        if self.DB_type == 'sqllite':
+            pass
+            # import sqlite3
+        elif self.DB_type == 'mongo':
+            pass
+            # import pymongo
+        elif self.DB_type == 'local':
+            self.vars.DB = []
+            
     
     def item_get_data(self, url):
         '''
@@ -130,6 +147,8 @@ class Handler:
                 self.url=url
                 tables_rows=self.item_get_data(url)
                 self.run_handle(tables_rows)
+                  
+                
         else:
             while not self.vars.done:
                 if self.vars.next_url is None:
@@ -176,19 +195,46 @@ class Handler:
         None.
 
         '''
-        try:
-            self.sendDB(self.tables, 
-                      )
-            self.flush_tables()
-            self.write(self.vars)
-            self.vars.tables_created=True
-            print('Chkpoint.')
-        except Exception as e:
-            print('Chkpoint failed, maybe next time', e)
+        if self.DB_type == 'sqllite':
+            try:
+                self.sendDB(self.tables, 
+                          )
+                self.flush_tables()
+                self.write(self.vars)
+                self.vars.tables_created=True
+                print('Chkpoint.')
+            except Exception as e:
+                print('Chkpoint failed, maybe next time', e)
+        elif self.DB_type == 'mongo':
+            try:
+                self.toMongo(self.tables)
+                self.flush_tables()
+                self.write(self.vars)
+                print('Chkpoint.')
+            except Exception as e:
+                print('Chkpoint failed, maybe next time', e)
+        elif self.DB_type == 'local':
+            self.vars.DB = self.tables
         
     def flush_tables(self):
         for table_name in self.tables:
             self.tables[table_name]=[]
+            
+    def toMongo(self, tables):
+        if self.DB_info is None:
+            raise Exception('Please set the database info for MongoDB.')
+        for table_name in tables:
+            myclient = pymongo.MongoClient(self.DB_info['connetion_string'])
+            mydb = myclient[self.DB_info['database']]
+            mycol = mydb[self.DB_info[table_name]]
+            self.mongo_response = mycol.insert_many(tables)
+            
+    def toLocal(self, tables):
+        for table_name in tables:
+            if table_name not in self.vars.DB:
+                self.vars.DB[table_name] = []                
+            self.vars.DB[table_name] += tables[table_name]
+         
     
     def sendDB(self, df):
         '''
