@@ -214,7 +214,10 @@ class Handler:
             except Exception as e:
                 print('Chkpoint failed, maybe next time', e)
         elif self.DB_type == 'local':
-            self.vars.DB = self.tables
+            self.vars.DB += self.tables
+            self.flush_tables()
+            self.write(self.vars)
+            print('Chkpoint.')
         
     def flush_tables(self):
         for table_name in self.tables:
