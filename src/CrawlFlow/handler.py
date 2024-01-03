@@ -89,7 +89,7 @@ class Handler:
             pass
             # import pymongo
         elif self.DB_type == 'local':
-            self.vars.DB = []
+            self.vars.DB = {}
             
     
     def item_get_data(self, url):
@@ -214,7 +214,10 @@ class Handler:
             except Exception as e:
                 print('Chkpoint failed, maybe next time', e)
         elif self.DB_type == 'local':
-            self.vars.DB += self.tables
+            for table_name in self.tables:
+                if table_name not in self.vars.DB:
+                    self.vars.DB[table_name] = []
+            self.vars.DB[table_name] += self.tables[table_name]
             self.flush_tables()
             self.write(self.vars)
             print('Chkpoint.')
